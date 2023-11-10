@@ -1,0 +1,43 @@
+<mapper namespace="user">
+<!--    索引： namespace.id-->
+    <select id="selectList" resultType="pojo.User">
+        select * from user
+    </select>
+    <select id="selectOne" parameterType="java.lang.String" resultType="pojo.User">
+        select * from user WHERE id =#{id}
+    </select>
+    <select id="joinSelect" parameterType="java.lang.String" resultType="pojo.Course">
+        select
+            course_name
+        from user u
+        left join course_user cu on user_id = u.id
+        left join course c on course_id = c.id
+        where name = #{userName}
+    </select>
+    <insert id="insertUser" parameterType="pojo.User">
+        insert into user values(#{id},#{name})
+    </insert>
+    <delete id="deleteUser" parameterType="java.lang.String">
+        delete from user where id=#{id}
+    </delete>
+    <update id="updateUser" parameterType="pojo.User">
+        update user set name=#{name} where id=#{id}
+    </update>
+    <update id="createTable" parameterType="java.lang.String">
+        CREATE TABLE ${tableName} (
+        id bigint(20) NOT NULL AUTO_INCREMENT,
+        entityId bigint(20) NOT NULL,
+        dx double NOT NULL,
+        dy double NOT NULL,
+        dz double NOT NULL,
+        ntype varchar(32) NOT NULL,
+        gnssTime bigint(20) NOT NULL,
+        speed float DEFAULT NULL,
+        direction float DEFAULT NULL,
+        attributes varchar(255) DEFAULT NULL,
+        PRIMARY KEY (id))
+    </update>
+    <update id="deleteTable" parameterType="java.lang.String">
+        DROP TABLE ${tableName}
+    </update>
+</mapper>
